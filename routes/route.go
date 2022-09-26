@@ -16,7 +16,7 @@ func Route(app *fiber.App) {
 
 	// routes
 	userRoutes.Post("/api", userController.UserApi)
-
+	userRoutes.Get("/auth", userController.Auth)
 	accountRoutes.Post("/auth", accountController.Auth)
 
 }

@@ -45,3 +45,16 @@ func (userService *UserService) GetUserByEmail(ctx context.Context, email string
 
 	return user
 }
+
+func (userService *UserService) GetUserById(ctx context.Context, id primitive.ObjectID) *models.User {
+	var user *models.User
+
+	err := userService.userCollection.FindOne(ctx, &fiber.Map{"_id": id}).Decode(&user)
+
+	if err != nil {
+		return nil
+	}
+
+	return user
+
+}

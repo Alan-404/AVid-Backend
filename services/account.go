@@ -60,7 +60,7 @@ func (accountService *AccountService) CheckPassword(account *models.Account, pas
 func (accountService *AccountService) GetAccountById(ctx context.Context, accountId primitive.ObjectID) *models.Account {
 	var account *models.Account
 
-	err := accountService.accountCollection.FindOne(ctx, &fiber.Map{"id": accountId}).Decode(&account)
+	err := accountService.accountCollection.FindOne(ctx, &fiber.Map{"_id": accountId}).Decode(&account)
 
 	if err != nil {
 		return nil

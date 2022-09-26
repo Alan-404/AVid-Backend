@@ -23,3 +23,21 @@ func GenerateToken(accountId primitive.ObjectID) string {
 	return accessToken
 
 }
+
+func GetAccountId(accessToken string) interface{} {
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(accessToken, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(common.Secret), nil
+	})
+
+	if err != nil {
+		return nil
+	}
+
+	for key, val := range claims {
+		if key == "accountId" {
+			return val
+		}
+	}
+	return nil
+}

@@ -4,8 +4,10 @@ import (
 	"context"
 	"net/http"
 	"server/dto"
+	"server/middleware"
 	"server/models"
 	"server/services"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -52,6 +54,7 @@ func (userController *UserController) UserApi(c *fiber.Ctx) error {
 	}
 
 	account := models.Account{
+		Id:       primitive.NewObjectID(),
 		UserId:   *newUserId,
 		Password: userData.Password,
 		Role:     userData.Role,
@@ -64,4 +67,33 @@ func (userController *UserController) UserApi(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: true, User: user})
+}
+
+func (userController *UserController) Auth(c *fiber.Ctx) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	headerAuthorization := c.GetReqHeaders()["Authorization"]
+	token := strings.Split(headerAuthorization, " ")[1]
+	if token == "" {
+		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})
+	}
+	data := middleware.GetAccountId(token)
+	accountIdStr, _ := data.(string)
+
+	accountId, _ := primitive.ObjectIDFromHex(accountIdStr)
+
+	account := userController.accountService.GetAccountById(ctx, accountId)
+	if account == nil {
+		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})
+	}
+
+	user := userController.userService.GetUserById(ctx, account.UserId)
+
+	if user == nil {
+		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})
+	}
+
+	return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: true, User: *user})
 }
