@@ -79,10 +79,7 @@ func (userController *UserController) Auth(c *fiber.Ctx) error {
 	if token == "" {
 		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})
 	}
-	data := middleware.GetAccountId(token)
-	accountIdStr, _ := data.(string)
-
-	accountId, _ := primitive.ObjectIDFromHex(accountIdStr)
+	accountId, _ := primitive.ObjectIDFromHex(middleware.GetAccountId(token))
 
 	account := userController.accountService.GetAccountById(ctx, accountId)
 	if account == nil {

@@ -15,8 +15,10 @@ func Route(app *fiber.App) {
 	accountRoutes := app.Group("/account")
 
 	// routes
+	// #user
 	userRoutes.Post("/api", userController.UserApi)
 	userRoutes.Get("/auth", userController.Auth)
-	accountRoutes.Post("/auth", accountController.Auth)
+	// #account
+	accountRoutes.Use("/auth", accountController.Auth)
 
 }

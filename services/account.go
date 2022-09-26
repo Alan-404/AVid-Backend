@@ -69,3 +69,22 @@ func (accountService *AccountService) GetAccountById(ctx context.Context, accoun
 	return account
 
 }
+
+func (accountService *AccountService) ChangePassword(ctx context.Context, account *models.Account, oldPassword string, newPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(oldPassword))
+	if err != nil {
+		return false
+	}
+
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+
+	update := &fiber.Map{"password": hashPassword}
+
+	_, err = accountService.accountCollection.UpdateOne(ctx, &fiber.Map{"_id": account.Id}, &fiber.Map{"$set": update})
+
+	if err != nil {
+		return false
+	}
+
+	return true
+}

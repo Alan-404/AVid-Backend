@@ -9,3 +9,8 @@ type ResponseLoginDTO struct {
 	Success     bool   `json:"success"`
 	AccessToken string `json:"accessToken"`
 }
+
+type ChangePasswordDTO struct {
+	OldPassword string `json:"oldPassword"`
+	NewPassword string `json:"newPassword"`
+}
