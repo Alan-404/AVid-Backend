@@ -62,7 +62,7 @@ func (accountController *AccountController) Auth(c *fiber.Ctx) error {
 			return c.Status(http.StatusBadRequest).JSON(dto.ResponseLoginDTO{Success: false})
 		}
 
-		return c.Status(http.StatusBadRequest).JSON(dto.ResponseLoginDTO{Success: true, AccessToken: accessToken})
+		return c.Status(http.StatusAccepted).JSON(dto.ResponseLoginDTO{Success: true, AccessToken: accessToken})
 	} else if c.Method() == "PUT" {
 		headerAuthorization := c.GetReqHeaders()["Authorization"]
 		token := strings.Split(headerAuthorization, " ")[1]
