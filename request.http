@@ -1,0 +1,23 @@
+POST http://localhost:5200/user
+Content-Type: application/json
+
+{
+    "firstName": "triz",
+    "lastName": "nguyen",
+    "gender": "male",
+    "bdate": "2001-04-04",
+    "email": "nguyentri12.alan@gmail.com",
+    "phone": "12121",
+    "password": "123",
+    "role": true
+}
+
+
+###
+POST http://localhost:5200/account/auth
+Content-Type: application/json
+
+{
+    "email": "nguyentri.alan@gmail.com",
+    "password": "123"
+}
