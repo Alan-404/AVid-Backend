@@ -2,11 +2,11 @@ POST http://localhost:5200/user/api
 Content-Type: application/json
 
 {
-    "firstName": "triz",
+    "firstName": "tri",
     "lastName": "nguyen",
     "gender": "male",
     "bdate": "2001-04-04",
-    "email": "nguyentri12.alan@gmail.com",
+    "email": "nguyentri.alan@gmail.com",
     "phone": "12121",
     "password": "123",
     "role": true
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
     "email": "nguyentri.alan@gmail.com",
-    "password": "456"
+    "password": "123"
 }
 
 

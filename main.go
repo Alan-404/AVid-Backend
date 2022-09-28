@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{DisablePreParseMultipartForm: true, StreamRequestBody: true})
 
 	app.Use(cors.New())
 

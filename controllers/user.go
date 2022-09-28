@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"server/dto"
 	"server/middleware"
@@ -31,9 +33,10 @@ func (userController *UserController) UserApi(c *fiber.Ctx) error {
 
 	defer cancel()
 
-	var userData *dto.CreateUserDTO
+	var userData dto.CreateUserDTO
 
 	if err := c.BodyParser(&userData); err != nil {
+		fmt.Println(err)
 		return c.Status(http.StatusBadRequest).JSON(dto.ResponseCreateUserDTO{Success: false})
 	}
 
@@ -45,6 +48,27 @@ func (userController *UserController) UserApi(c *fiber.Ctx) error {
 		Phone:     userData.Phone,
 		BDate:     userData.BDate,
 		Gender:    userData.Gender,
+	}
+
+	fileHeader, err := c.FormFile("avatar")
+	if err != nil {
+		fmt.Println(err)
+		return c.Status(http.StatusBadRequest).JSON(dto.ResponseCreateUserDTO{Success: false})
+	}
+
+	file, _ := fileHeader.Open()
+	data, _ := ioutil.ReadAll(file)
+
+	postFix := ".jpg"
+
+	if strings.Split(http.DetectContentType(data), "/")[0] != "image" {
+		return c.Status(http.StatusBadRequest).JSON(dto.ResponseCreateUserDTO{Success: false, Message: "Not Allow Anything else Image File"})
+	}
+
+	err = ioutil.WriteFile("./storage/avatar/"+user.Id.Hex()+postFix, data, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return c.Status(http.StatusBadRequest).JSON(dto.ResponseCreateUserDTO{Success: false})
 	}
 
 	newUserId := userController.userService.CreateUser(ctx, user)
@@ -93,4 +117,10 @@ func (userController *UserController) Auth(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: true, User: *user})
+}
+
+func (userController *UserController) GetAvatar(c *fiber.Ctx) error {
+	id := c.Query("id")
+
+	return c.Status(http.StatusAccepted).SendFile("./storage/avatar/" + id + ".jpg")
 }

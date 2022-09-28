@@ -1,16 +1,20 @@
 package dto
 
-import "server/models"
+import (
+	"os"
+	"server/models"
+)
 
 type CreateUserDTO struct {
-	FirstName string `json:"firstName" bson:"firstName"`
-	LastName  string `json:"lastName" bson:"lastName"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
-	Gender    string `json:"gender"`
-	BDate     string `json:"bdate"`
-	Password  string `json:"password"`
-	Role      bool   `json:"role"`
+	FirstName string  `form:"firstName" bson:"firstName"`
+	LastName  string  `form:"lastName" bson:"lastName"`
+	Email     string  `form:"email"`
+	Phone     string  `form:"phone"`
+	Gender    string  `form:"gender"`
+	BDate     string  `form:"bdate"`
+	Password  string  `form:"password"`
+	Role      bool    `form:"role"`
+	Avatar    os.File `form:"avatar"`
 }
 
 type ResponseCreateUserDTO struct {

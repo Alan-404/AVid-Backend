@@ -31,6 +31,7 @@ func (accountController *AccountController) Auth(c *fiber.Ctx) error {
 	defer cancel()
 
 	if c.Method() == "POST" {
+
 		var loginData *dto.LoginDTO
 
 		err := c.BodyParser(&loginData)
