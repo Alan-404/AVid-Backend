@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"server/common"
 	"strings"
 
@@ -49,7 +48,6 @@ func GetAccountId(c *fiber.Ctx) error {
 			accountId, _ := val.(string)
 			c.Request().Header.Set("id", accountId)
 			c.Next()
-			fmt.Print("OK")
 			return nil
 		}
 	}

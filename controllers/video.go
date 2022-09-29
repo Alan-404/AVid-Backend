@@ -21,6 +21,7 @@ type VideoController struct {
 	userService    *services.UserService
 	accountService *services.AccountService
 	videoService   *services.VideoService
+	channelService *services.ChannelService
 }
 
 func NewVideoController() *VideoController {
@@ -28,6 +29,7 @@ func NewVideoController() *VideoController {
 	videoController.accountService = services.NewAccountService()
 	videoController.userService = services.NewUserService()
 	videoController.videoService = services.NewVideoService()
+	videoController.channelService = services.NewChannelService()
 
 	return videoController
 }
@@ -44,11 +46,16 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
 	}
 
+	channel := videoController.channelService.GetChannelByUserId(ctx, account.UserId)
+	if channel == nil {
+		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+	}
+
 	var createVideoDTO dto.CreateVideoDTO
 
 	if err := c.BodyParser(&createVideoDTO); err != nil {
 		fmt.Println(err)
-		return c.Status(40).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
 	}
 
 	id := primitive.NewObjectID()

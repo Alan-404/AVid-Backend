@@ -12,10 +12,13 @@ func Route(app *fiber.App) {
 	accountController := controllers.NewAccountController()
 	userController := controllers.NewUserController()
 	videoController := controllers.NewVideoController()
+	channelController := controllers.NewChannelController()
+
 	// group
 	userRoutes := app.Group("/user")
 	accountRoutes := app.Group("/account")
 	videoRoutes := app.Group("/video")
+	channelRoutes := app.Group("/channel")
 
 	// routes
 	// #user
@@ -29,4 +32,6 @@ func Route(app *fiber.App) {
 	videoRoutes.Post("/api", middleware.GetAccountId, videoController.VideoApi)
 	videoRoutes.Get("/api", videoController.GetVideos)
 	videoRoutes.Get("/media", videoController.GetMedia)
+	// #channel
+	channelRoutes.Post("/api", middleware.GetAccountId, channelController.CreateChannel)
 }

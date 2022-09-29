@@ -5,6 +5,8 @@ import (
 	"server/configs"
 	"server/models"
 
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -27,4 +29,14 @@ func (channelService *ChannelService) CreateChannel(ctx context.Context, channel
 	}
 
 	return &channel
+}
+
+func (channelService *ChannelService) GetChannelByUserId(ctx context.Context, userId primitive.ObjectID) *models.Channel {
+	var channel *models.Channel
+
+	err := channelService.channelCollection.FindOne(ctx, &fiber.Map{"userid": userId}).Decode(&channel)
+	if err != nil {
+		return nil
+	}
+	return channel
 }
