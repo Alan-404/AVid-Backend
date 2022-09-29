@@ -19,21 +19,21 @@ Content-Type: application/json
 
 {
     "email": "nguyentri.alan@gmail.com",
-    "password": "123"
+    "password": "456"
 }
 
 
 ###
 GET http://localhost:5200/user/auth
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMxNWZlODA0OTIzZjA5ZTgyZmNhMmMifQ.stXcEokUJ7NbtkUhFta2zQ0OiAAYuyjrpPMxesmyLec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMzYTFjMGFjZjdlNTFlZjViYWM1ZmIifQ.m8iLvIaNZE9hFCa7DqFilOr_diLVuKVDaJoBbIfmvBU
 
 
 
 ###
 PUT http://localhost:5200/account/auth
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMxMjgyODc0ZjU2YjQ1MzI2YmVlOTkifQ.PUdNo9_D8YVbkmvQZbIXx4R-5Zw8IQwtTSip0ZRr6tc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMzYTFjMGFjZjdlNTFlZjViYWM1ZmIifQ.m8iLvIaNZE9hFCa7DqFilOr_diLVuKVDaJoBbIfmvBU
 
 {
     "oldPassword": "123",

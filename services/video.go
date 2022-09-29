@@ -5,6 +5,7 @@ import (
 	"server/configs"
 	"server/models"
 
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -26,4 +27,21 @@ func (videoService *VideoService) CreateVideo(ctx context.Context, video models.
 	}
 
 	return &video
+}
+
+func (videoService *VideoService) GetVideos(ctx context.Context, number int, page int) []models.Video {
+	var videos []models.Video
+	cursor, err := videoService.videoCollection.Find(ctx, &fiber.Map{})
+	if err != nil {
+		return nil
+	}
+	for cursor.Next(ctx) {
+		var result models.Video
+		if err := cursor.Decode(&result); err != nil {
+			return nil
+		}
+		videos = append(videos, result)
+	}
+	return videos
+
 }

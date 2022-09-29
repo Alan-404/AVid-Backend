@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"server/dto"
-	"server/middleware"
 	"server/models"
 	"server/services"
 	"strings"
@@ -17,14 +16,14 @@ import (
 )
 
 type UserController struct {
-	userService    services.UserService
-	accountService services.AccountService
+	userService    *services.UserService
+	accountService *services.AccountService
 }
 
 func NewUserController() *UserController {
 	userController := new(UserController)
-	userController.userService = *services.NewUserService()
-	userController.accountService = *services.NewAccountService()
+	userController.userService = services.NewUserService()
+	userController.accountService = services.NewAccountService()
 	return userController
 }
 
@@ -95,15 +94,9 @@ func (userController *UserController) UserApi(c *fiber.Ctx) error {
 
 func (userController *UserController) Auth(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-
 	defer cancel()
 
-	headerAuthorization := c.GetReqHeaders()["Authorization"]
-	token := strings.Split(headerAuthorization, " ")[1]
-	if token == "" {
-		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})
-	}
-	accountId, _ := primitive.ObjectIDFromHex(middleware.GetAccountId(token))
+	accountId, _ := primitive.ObjectIDFromHex(c.GetReqHeaders()["Id"])
 
 	account := userController.accountService.GetAccountById(ctx, accountId)
 	if account == nil {
@@ -111,6 +104,7 @@ func (userController *UserController) Auth(c *fiber.Ctx) error {
 	}
 
 	user := userController.userService.GetUserById(ctx, account.UserId)
+	fmt.Println(user)
 
 	if user == nil {
 		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})

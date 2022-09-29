@@ -1,8 +1,11 @@
 package middleware
 
 import (
+	"fmt"
 	"server/common"
+	"strings"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -24,21 +27,31 @@ func GenerateToken(accountId primitive.ObjectID) string {
 
 }
 
-func GetAccountId(accessToken string) string {
+func GetAccountId(c *fiber.Ctx) error {
+	headerAuthorization := c.GetReqHeaders()["Authorization"]
+	token := strings.Split(headerAuthorization, " ")[1]
+
+	if token == "" {
+		return c.Status(400).JSON(&fiber.Map{})
+	}
+
 	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(accessToken, claims, func(token *jwt.Token) (interface{}, error) {
+	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(common.Secret), nil
 	})
 
 	if err != nil {
-		return ""
+		return c.Status(400).JSON(&fiber.Map{})
 	}
 
 	for key, val := range claims {
 		if key == "accountId" {
 			accountId, _ := val.(string)
-			return accountId
+			c.Request().Header.Set("id", accountId)
+			c.Next()
+			fmt.Print("OK")
+			return nil
 		}
 	}
-	return ""
+	return c.Status(400).JSON(&fiber.Map{})
 }
