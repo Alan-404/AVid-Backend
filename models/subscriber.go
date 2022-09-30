@@ -8,8 +8,8 @@ import (
 
 type Subscriber struct {
 	Id          primitive.ObjectID `json:"id" bson:"_id"`
-	ChannelId   primitive.ObjectID `json:"channelId" bson:"channelid"`
-	UserId      primitive.ObjectID `json:"userId" bson:"userid"`
-	SubscibedAt time.Time          `json:"subscribedAt" bson:"subscribedat"`
+	ChannelId   primitive.ObjectID `json:"channelId" bson:"channelId"`
+	UserId      primitive.ObjectID `json:"userId" bson:"userId"`
+	SubscibedAt time.Time          `json:"subscribedAt" bson:"subscribedAt"`
 	Status      bool               `json:"status" bson:"status"`
 }

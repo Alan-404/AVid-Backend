@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"server/dto"
 	"server/models"
 	"server/services"
 	"time"
@@ -32,7 +33,13 @@ func (channelController *ChannelController) CreateChannel(c *fiber.Ctx) error {
 
 	account := channelController.accountService.GetAccountById(ctx, accountId)
 	if account == nil {
-		return c.Status(400).JSON(&fiber.Map{})
+		return c.Status(400).JSON(dto.ResponseCreateChannel{Success: false, Message: "Undentified Token"})
+	}
+
+	checkChannel := channelController.channelService.GetChannelByUserId(ctx, account.UserId)
+
+	if checkChannel != nil {
+		return c.Status(500).JSON(dto.ResponseCreateChannel{Success: false, Message: "Internel Error Server"})
 	}
 
 	var channel = *&models.Channel{
@@ -46,8 +53,24 @@ func (channelController *ChannelController) CreateChannel(c *fiber.Ctx) error {
 	addedChannel := channelController.channelService.CreateChannel(ctx, channel)
 
 	if addedChannel == nil {
-		return c.Status(400).JSON(&fiber.Map{})
+		return c.Status(500).JSON(dto.ResponseCreateChannel{Success: false, Message: "Internel Error Server"})
 	}
 
-	return c.Status(200).JSON(&fiber.Map{"channel": channel})
+	return c.Status(200).JSON(dto.ResponseCreateChannel{Success: true, Channel: &channel})
+}
+
+func (channelControler *ChannelController) GetChannelById(c *fiber.Ctx) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	id := c.Query("id")
+	if id == "" {
+		return c.Status(400).JSON(dto.ResponseGetChannelById{Success: false})
+	}
+	channelId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return c.Status(500).JSON(dto.ResponseGetChannelById{Success: false})
+	}
+	channel := channelControler.channelService.GetChannelById(ctx, channelId)
+	return c.Status(200).JSON(dto.ResponseGetChannelById{Success: true, Channel: channel})
+
 }

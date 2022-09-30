@@ -19,14 +19,14 @@ Content-Type: application/json
 
 {
     "email": "nguyentri.alan@gmail.com",
-    "password": "456"
+    "password": "123"
 }
 
 
 ###
 GET http://localhost:5200/user/auth
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMzYTFjMGFjZjdlNTFlZjViYWM1ZmIifQ.m8iLvIaNZE9hFCa7DqFilOr_diLVuKVDaJoBbIfmvBU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzM2NGQ4NjhmNGExZjg5ZjQzNzUzNDYifQ.HM4Gr_PrFKhED6ASjnTtEFcOLMcpishuYQlO6afi_7g
 
 
 
@@ -44,4 +44,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2M
 ###
 POST http://localhost:5200/channel/api
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzMzYTFjMGFjZjdlNTFlZjViYWM1ZmIifQ.m8iLvIaNZE9hFCa7DqFilOr_diLVuKVDaJoBbIfmvBU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzM2NGQ4NjhmNGExZjg5ZjQzNzUzNDYifQ.HM4Gr_PrFKhED6ASjnTtEFcOLMcpishuYQlO6afi_7g

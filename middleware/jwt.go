@@ -31,7 +31,7 @@ func GetAccountId(c *fiber.Ctx) error {
 	token := strings.Split(headerAuthorization, " ")[1]
 
 	if token == "" {
-		return c.Status(400).JSON(&fiber.Map{})
+		return c.Status(400).JSON(&fiber.Map{"Message": "Invalid Token"})
 	}
 
 	claims := jwt.MapClaims{}
@@ -40,7 +40,7 @@ func GetAccountId(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		return c.Status(400).JSON(&fiber.Map{})
+		return c.Status(400).JSON(&fiber.Map{"Message": "Invalid Token"})
 	}
 
 	for key, val := range claims {
@@ -51,5 +51,5 @@ func GetAccountId(c *fiber.Ctx) error {
 			return nil
 		}
 	}
-	return c.Status(400).JSON(&fiber.Map{})
+	return c.Status(400).JSON(&fiber.Map{"Message": "Invalid Token"})
 }

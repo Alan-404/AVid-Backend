@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"server/configs"
 	"server/models"
 
@@ -34,9 +35,23 @@ func (channelService *ChannelService) CreateChannel(ctx context.Context, channel
 func (channelService *ChannelService) GetChannelByUserId(ctx context.Context, userId primitive.ObjectID) *models.Channel {
 	var channel *models.Channel
 
-	err := channelService.channelCollection.FindOne(ctx, &fiber.Map{"userid": userId}).Decode(&channel)
+	err := channelService.channelCollection.FindOne(ctx, &fiber.Map{"userId": userId}).Decode(&channel)
+
 	if err != nil {
+		fmt.Println(err)
 		return nil
 	}
 	return channel
+}
+
+func (channelService *ChannelService) GetChannelById(ctx context.Context, id primitive.ObjectID) *models.Channel {
+	var channel models.Channel
+
+	err := channelService.channelCollection.FindOne(ctx, &fiber.Map{"_id": id}).Decode(&channel)
+
+	if err != nil {
+		return nil
+	}
+
+	return &channel
 }

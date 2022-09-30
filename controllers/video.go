@@ -42,20 +42,21 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 	accountId, _ := primitive.ObjectIDFromHex(c.GetReqHeaders()["Id"])
 
 	account := videoController.accountService.GetAccountById(ctx, accountId)
+
 	if account == nil {
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Undentified Token"})
 	}
 
 	channel := videoController.channelService.GetChannelByUserId(ctx, account.UserId)
+
 	if channel == nil {
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Invalid Channel"})
 	}
 
 	var createVideoDTO dto.CreateVideoDTO
 
 	if err := c.BodyParser(&createVideoDTO); err != nil {
-		fmt.Println(err)
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 
 	id := primitive.NewObjectID()
@@ -63,7 +64,7 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 	fileHeader, err := c.FormFile("video")
 	if err != nil {
 		fmt.Println(err)
-		return c.Status(40).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 
 	file, _ := fileHeader.Open()
@@ -75,13 +76,12 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Not Allow Anything else Video File"})
 	}
 	if err := os.Mkdir("./storage/video/"+id.Hex(), 0755); err != nil {
-		fmt.Println(err)
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 	err = ioutil.WriteFile("./storage/video/"+id.Hex()+"/video"+postFix, data, 0644)
 	if err != nil {
 		fmt.Println(err)
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 
 	video := models.Video{
@@ -95,7 +95,7 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 	addedVideo := videoController.videoService.CreateVideo(ctx, video)
 
 	if addedVideo == nil {
-		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false})
+		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 
 	return c.Status(200).JSON(dto.ResponseCreateVideoDTO{Success: true, Video: *addedVideo})

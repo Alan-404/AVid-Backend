@@ -28,6 +28,7 @@ func NewUserController() *UserController {
 }
 
 func (userController *UserController) UserApi(c *fiber.Ctx) error {
+	fmt.Print("OK")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	defer cancel()
@@ -104,7 +105,6 @@ func (userController *UserController) Auth(c *fiber.Ctx) error {
 	}
 
 	user := userController.userService.GetUserById(ctx, account.UserId)
-	fmt.Println(user)
 
 	if user == nil {
 		return c.Status(http.StatusAccepted).JSON(dto.ResponseCreateUserDTO{Success: false})

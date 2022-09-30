@@ -34,4 +34,5 @@ func Route(app *fiber.App) {
 	videoRoutes.Get("/media", videoController.GetMedia)
 	// #channel
 	channelRoutes.Post("/api", middleware.GetAccountId, channelController.CreateChannel)
+	channelRoutes.Get("/api", channelController.GetChannelById)
 }

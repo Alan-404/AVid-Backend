@@ -38,7 +38,7 @@ func (accountService *AccountService) CreateAccount(ctx context.Context, account
 func (accountService *AccountService) GetAccountByUserId(ctx context.Context, userId primitive.ObjectID) *models.Account {
 	var account *models.Account
 
-	err := accountService.accountCollection.FindOne(ctx, &fiber.Map{"userid": userId}).Decode(&account)
+	err := accountService.accountCollection.FindOne(ctx, &fiber.Map{"userId": userId}).Decode(&account)
 
 	if err != nil {
 		return nil

@@ -6,7 +6,7 @@ import (
 
 type Account struct {
 	Id       primitive.ObjectID `json:"id" bson:"_id"`
-	UserId   primitive.ObjectID `json:"userId"`
+	UserId   primitive.ObjectID `json:"userId" bson:"userId"`
 	Password string             `json:"password"`
 	Role     bool               `json:"role"`
 }
