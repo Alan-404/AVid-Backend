@@ -84,10 +84,17 @@ func (videoController *VideoController) VideoApi(c *fiber.Ctx) error {
 		return c.Status(500).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Internal Error Server"})
 	}
 
+	channel = videoController.channelService.GetChannelByUserId(ctx, account.UserId)
+
+	if channel == nil {
+		return c.Status(400).JSON(dto.ResponseCreateVideoDTO{Success: false, Message: "Not Channel Error"})
+	}
+
 	video := models.Video{
 		Id:          id,
+		Name:        createVideoDTO.Name,
 		Size:        strconv.Itoa(int(fileHeader.Size)) + " bytes",
-		UserId:      account.UserId,
+		ChannelId:   channel.Id,
 		CreatedAt:   time.Now(),
 		Description: createVideoDTO.Description,
 		View:        0,
@@ -120,11 +127,12 @@ func (videoController *VideoController) GetVideos(c *fiber.Ctx) error {
 
 	videos := videoController.videoService.GetVideos(ctx, num, pg)
 
-	var users []string
+	var users []dto.InfoUserUploadedVideo
 
 	for _, video := range videos {
-		user := videoController.userService.GetUserById(ctx, video.UserId)
-		users = append(users, user.FirstName+" "+user.LastName)
+		channel := videoController.channelService.GetChannelById(ctx, video.ChannelId)
+		user := videoController.userService.GetUserById(ctx, channel.UserId)
+		users = append(users, dto.InfoUserUploadedVideo{Id: user.Id.Hex(), Name: user.FirstName + " " + user.LastName})
 	}
 
 	return c.Status(200).JSON(&fiber.Map{"videos": videos, "users": users})

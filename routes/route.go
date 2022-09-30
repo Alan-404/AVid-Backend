@@ -35,4 +35,6 @@ func Route(app *fiber.App) {
 	// #channel
 	channelRoutes.Post("/api", middleware.GetAccountId, channelController.CreateChannel)
 	channelRoutes.Get("/api", channelController.GetChannelById)
+	channelRoutes.Post("/subscribe", middleware.GetAccountId, channelController.AddSubcriber)
+	channelRoutes.Get("/auth", middleware.GetAccountId, channelController.Auth)
 }

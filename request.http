@@ -24,6 +24,21 @@ Content-Type: application/json
 
 
 ###
+GET http://localhost:5200/channel/auth
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzM2NGQ4NjhmNGExZjg5ZjQzNzUzNDYifQ.HM4Gr_PrFKhED6ASjnTtEFcOLMcpishuYQlO6afi_7g
+
+###
+POST http://localhost:5200/channel/subscribe
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzM2NGRmYTI1OTE2YzVlZjQ1NDBjNTUifQ.ILCUHrMDMFuY_C74ckFRRpz_mT-iRnF8nfFEbx8VyOw
+
+{
+    "channelId": "63364ee00d9e5ff81b6a8b62"
+}
+
+
+###
 GET http://localhost:5200/user/auth
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2MzM2NGQ4NjhmNGExZjg5ZjQzNzUzNDYifQ.HM4Gr_PrFKhED6ASjnTtEFcOLMcpishuYQlO6afi_7g

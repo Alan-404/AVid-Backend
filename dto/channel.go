@@ -12,3 +12,8 @@ type ResponseGetChannelById struct {
 	Success bool            `json:"success"`
 	Channel *models.Channel `json:"channel"`
 }
+
+type ResponseGetChannelByToken struct {
+	Success bool           `json:"success"`
+	Channel models.Channel `json:"channel"`
+}

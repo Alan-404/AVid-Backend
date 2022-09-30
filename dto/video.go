@@ -7,6 +7,7 @@ import (
 
 type CreateVideoDTO struct {
 	Video       os.File `form:"video"`
+	Name        string  `form:"name"`
 	Description string  `form:"description"`
 }
 

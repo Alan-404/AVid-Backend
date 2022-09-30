@@ -8,7 +8,8 @@ import (
 
 type Video struct {
 	Id          primitive.ObjectID `json:"id" bson:"_id"`
-	UserId      primitive.ObjectID `json:"userId" bson:"userId"`
+	ChannelId   primitive.ObjectID `json:"channelId" bson:"channelId"`
+	Name        string             `json:"name" bson:"name"`
 	Size        string             `json:"size" bson:"size"`
 	CreatedAt   time.Time          `json:"createdAt" bson:"createdAt"`
 	Description string             `json:"description" bson:"description"`

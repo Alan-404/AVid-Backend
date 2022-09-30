@@ -22,3 +22,8 @@ type ResponseCreateUserDTO struct {
 	User    models.User `json:"user"`
 	Message string      `json:"message"`
 }
+
+type InfoUserUploadedVideo struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
